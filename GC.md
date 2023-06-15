@@ -75,25 +75,25 @@ Referenced objects are shown in blue. Unreferenced objects are shown in gold. Al
 Step 2: Normal Deletion
 Normal deletion removes unreferenced objects leaving referenced objects and pointers to free space.
 
-![Hotspot JVM](Images/normaldel.PNG)
+![Hotspot JVM](normaldel.PNG)
 The memory allocator holds references to blocks of free space where new object can be allocated.
 
 Step 2a: Deletion with Compacting
 To further improve performance, in addition to deleting unreferenced objects, you can also compact the remaining referenced objects. By moving referenced object together, this makes new memory allocation much easier and faster.
 
-![Hotspot JVM](Images/delwithcompacting.PNG)
+![Hotspot JVM](delwithcompacting.PNG)
 Why Generational Garbage Collection?
 As stated earlier, having to mark and compact all the objects in a JVM is inefficient. As more and more objects are allocated, the list of objects grows and grows leading to longer and longer garbage collection time. However, empirical analysis of applications has shown that most objects are short lived.
 
 Here is an example of such data. The Y axis shows the number of bytes allocated and the X access shows the number of bytes allocated over time.
 
-![Hotspot JVM](Images/Byteallocated.gif)
+![Hotspot JVM](Byteallocated.gif)
 As you can see, fewer and fewer objects remain allocated over time. In fact most objects have a very short life as shown by the higher values on the left side of the graph.
 
 JVM Generations
 The information learned from the object allocation behavior can be used to enhance the performance of the JVM. Therefore, the heap is broken up into smaller parts or generations. The heap parts are: Young Generation, Old or Tenured Generation, and Permanent Generation
 
-![Hotspot JVM](Images/hotheapstr.PNG)
+![Hotspot JVM](hotheapstr.PNG)
 The Young Generation is where all new objects are allocated and aged. When the young generation fills up, this causes a minor garbage collection. Minor collections can be optimized assuming a high object mortality rate. A young generation full of dead objects is collected very quickly. Some surviving objects are aged and eventually move to the old generation.
 
 Stop the World Event - All minor garbage collections are "Stop the World" events. This means that all application threads are stopped until the operation completes. Minor garbage collections are always Stop the World events.
@@ -114,25 +114,25 @@ Now that you understand why the heap is separted into different generations, it 
 
 First, any new objects are allocated to the eden space. Both survivor spaces start out empty.
 
-![Hotspot JVM](Images/objectallocation.PNG)
+![Hotspot JVM](objectallocation.PNG)
 When the eden space fills up, a minor garbage collection is triggered.
 
-![Hotspot JVM](Images/fillingedenspace.PNG)
+![Hotspot JVM](fillingedenspace.PNG)
 Referenced objects are moved to the first survivor space. Unreferenced objects are deleted when the eden space is cleared.
 
-![Hotspot JVM](Images/copyingrefspace.PNG)
+![Hotspot JVM](copyingrefspace.PNG)
 At the next minor GC, the same thing happens for the eden space. Unreferenced objects are deleted and referenced objects are moved to a survivor space. However, in this case, they are moved to the second survivor space (S1). In addition, objects from the last minor GC on the first survivor space (S0) have their age incremented and get moved to S1. Once all surviving objects have been moved to S1, both S0 and eden are cleared. Notice we now have differently aged object in the survivor space.
 
-![Hotspot JVM](Images/objectaging.PNG)
+![Hotspot JVM](objectaging.PNG)
 At the next minor GC, the same process repeats. However this time the survivor spaces switch. Referenced objects are moved to S0. Surviving objects are aged. Eden and S1 are cleared.
 
-![Hotspot JVM](Images/additionalaging.PNG)
+![Hotspot JVM](additionalaging.PNG)
 This slide demonstrates promotion. After a minor GC, when aged objects reach a certain age threshold (8 in this example) they are promoted from young generation to old generation.
 
-![Hotspot JVM](Images/promotion1.PNG)
+![Hotspot JVM](promotion1.PNG)
 As minor GCs continue to occure objects will continue to be promoted to the old generation space.
 
-![Hotspot JVM](Images/promotion2.PNG)
+![Hotspot JVM](promotion2.PNG)
 So that pretty much covers the entire process with the young generation. Eventually, a major GC will be performed on the old generation which cleans up and compacts that space.
 
-![Hotspot JVM](Images/gcprocesssummary.PNG)
+![Hotspot JVM](gcprocesssummary.PNG)
