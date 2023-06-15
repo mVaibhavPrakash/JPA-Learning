@@ -30,7 +30,7 @@ For the sake of security, the Java virtual machine imposes strong syntactic and 
 **Hotspot Architecture**
 The HotSpot JVM possesses an architecture that supports a strong foundation of features and capabilities and supports the ability to realize high performance and massive scalability. For example, the HotSpot JVM JIT compilers generate dynamic optimizations. In other words, they make optimization decisions while the Java application is running and generate high-performing native machine instructions targeted for the underlying system architecture. In addition, through the maturing evolution and continuous engineering of its runtime environment and multithreaded garbage collector, the HotSpot JVM yields high scalability on even the largest available computer systems.
 
-![Hotspot JVM](jvm.PNG)
+![Hotspot JVM](/Images/jvm.PNG)
 The main components of the JVM include the classloader, the runtime data areas, and the execution engine.
 
 Key Hotspot Components
