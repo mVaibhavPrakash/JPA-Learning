@@ -69,7 +69,7 @@ In a programming language like C, allocating and deallocating memory is a manual
 Step 1: Marking
 The first step in the process is called marking. This is where the garbage collector identifies which pieces of memory are in use and which are not.
 
-![Hotspot JVM](Images/marking.PNG)
+![Hotspot JVM](marking.PNG)
 Referenced objects are shown in blue. Unreferenced objects are shown in gold. All objects are scanned in the marking phase to make this determination. This can be a very time consuming process if all objects in a system must be scanned.
 
 Step 2: Normal Deletion
